@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <title>Kakao 지도 시작하기</title>
+    <style>
+        #map {
+            width: 50%;
+            height: 800px;
+            float: left;
+        }
+
+        #sidebar {
+            width: 40%; /* 수정된 부분: 사이드바 크기를 40%로 조정 */
+            height: 800px;
+            position: relative;
+            background-color: #f8f8f8; /* 수정된 부분: 배경색 지정 */
+            overflow-y: auto;
+            padding: 10px;
+            box-shadow: -2px 0px 5px 0px rgba(0,0,0,0.2);
+            float: right;
+        }
+
+        .hospital-info {
+            margin-bottom: 10px; /* 수정된 부분: 간격 조정 */
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s; /* 수정된 부분: 전환 효과 추가 */
+        }
+
+        .hospital-info:hover {
+            background-color: #f0f0f0; /* 수정된 부분: 호버 효과 배경색 변경 */
+        }
+
+        .hospital-info h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* ... (기존 CSS 스타일 유지) */
+    </style>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b97c1385ace100f0020bff9a65ac426a"></script>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="sidebar">
+        <h2 style="margin-bottom: 20px;">병원 정보</h2>
+        <!-- 병원 정보가 동적으로 추가될 영역 -->
+    </div>
+
+    <script>
+        var container = document.getElementById('map');
+        var options = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            level: 4
+        };
+
+        var map = new kakao.maps.Map(container, options);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude,
+                    lon = position.coords.longitude;
+
+                var locPosition = new kakao.maps.LatLng(lat, lon),
+                    message = '<div style="padding:5px;">여기에 계신가요?!</div>';
+
+                displayMarker(locPosition, message);
+            });
+        } else {
+            var locPosition = new kakao.maps.LatLng(33.451393, 126.570738),
+                message = 'geolocation을 사용할 수 없어요..';
+
+            displayMarker(locPosition, message);
+        }
+
+        function displayMarker(locPosition, message) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: locPosition
+            });
+
+            var iwContent = message,
+                iwRemoveable = true;
+
+            var infowindow = new kakao.maps.InfoWindow({
+                content: iwContent,
+                removable: iwRemoveable
+            });
+
+            infowindow.open(map, marker);
+            map.setCenter(locPosition);
+
+            // 마커를 클릭했을 때 이벤트 처리
+            kakao.maps.event.addListener(marker, 'click', function() {
+                // 클릭한 마커의 정보 윈도우를 열고 병원 이름 표시
+                infowindow.setContent('<div style="padding:5px;">현재 위치</div>');
+                infowindow.open(map, marker);
+            });
+        }
+
+        var positions = [
+            { title: '카카오', latLng: new kakao.maps.LatLng(33.405705, 126.570677) },
+            { title: '생태연못', latLng: new kakao.maps.LatLng(33.450936, 126.569477) },
+            { title: '텃밭', latLng: new kakao.maps.LatLng(33.450879, 126.569940) },
+            { title: '근린공원', latLng: new kakao.maps.LatLng(33.451393, 126.570738) }
+        ];
+
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+        for (var i = 0; i < positions.length; i++) {
+            var imageSize = new kakao.maps.Size(24, 35);
+            var imageOption = { offset: new kakao.maps.Point(14, 34) };
+
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: positions[i].latLng,
+                title: positions[i].title,
+                image: markerImage
+            });
+
+            // 병원 정보를 사이드바에 추가
+            addHospitalInfoToSidebar(positions[i].title);
+        }
+
+        function addHospitalInfoToSidebar(title) {
+            var sidebar = document.getElementById('sidebar');
+            var hospitalInfo = document.createElement('div');
+            hospitalInfo.className = 'hospital-info';
+            hospitalInfo.innerHTML = '<h3>' + title + '</h3>';
+            hospitalInfo.onclick = function() {
+                alert('선택한 병원 정보: ' + title);
+            };
+            sidebar.appendChild(hospitalInfo);
+        }
+
+        var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage
+        });
+
+        marker.setMap(map);
+
+        var content = '<div class="customoverlay">' +
+            '   <a href="https://map.kakao.com/?itemId=18059921" target="_blank">' +
+            '       <span class="title">카카오 스페이스닷원</span>' +
+            '   </a>' +
+            '</div>';
+
+        var position = new kakao.maps.LatLng(33.450701, 126.570667);
+
+        var customOverlay = new kakao.maps.CustomOverlay({
+            map: map,
+            position: position,
+            content: content,
+            yAnchor: 1
+        });
+    </script>
+</body>
+</html>

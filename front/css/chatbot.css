@@ -1,0 +1,234 @@
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #e6f7f7; /* 연한 민트색 배경 */
+    }
+
+    #chat-box {
+      width: 400px;
+      height: 800px;
+      overflow-y: scroll;
+      padding: 10px;
+      background-color: #f0fafa; /* 채팅 박스 배경 */
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+      margin-bottom: 10px;
+      position: relative;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .my-message {
+      text-align: right;
+      background-color: #66b2b2; /* 나의 메시지 배경색 */
+      color: #fff; /* 나의 메시지 텍스트 색상 */
+    }
+
+    .other-message {
+      text-align: left;
+      background-color: #b2d3d3; /* 상대의 메시지 배경색 */
+      color: #333; /* 상대의 메시지 텍스트 색상 */
+    }
+
+    #input-box {
+      margin-top: 10px;
+      display: flex;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #b2d3d3; /* 연한 민트색 테두리 */
+      border-radius: 5px;
+      margin-right: 5px;
+      background-color: #fff; /* 밝은 흰색 배경 */
+    }
+
+    #message-input:focus {
+      outline: none;
+      border-color: #66b2b2; /* 밝은 민트색 포커스 테두리 */
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #66b2b2; /* 밝은 민트색 버튼 배경 */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #338080; /* 더 진한 민트색으로 호버 시 변경 */
+    }
+
+
+
+
+
+
+
+    body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #e6f7f7; /* 연한 민트색 배경 */
+}
+
+#chat-box {
+  width: 600px; /* 변경된 크기 */
+  height: 600px; /* 변경된 크기 */
+  overflow-y: scroll;
+  padding: 20px; /* 변경된 padding */
+  background-color: #f0fafa; /* 채팅 박스 배경 */
+  border-radius: 12px; /* 변경된 border-radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+  margin-bottom: 15px; /* 변경된 margin-bottom */
+  position: relative;
+  padding: 15px; /* 변경된 padding */
+  border-radius: 15px; /* 변경된 border-radius */
+}
+
+.my-message {
+  text-align: right;
+  background-color: #66b2b2; /* 나의 메시지 배경색 */
+  color: #fff; /* 나의 메시지 텍스트 색상 */
+}
+
+.other-message {
+  text-align: left;
+  background-color: #b2d3d3; /* 상대의 메시지 배경색 */
+  color: #333; /* 상대의 메시지 텍스트 색상 */
+}
+
+#input-box {
+  margin-top: 15px; /* 변경된 margin-top */
+  display: flex;
+}
+
+#message-input {
+  flex: 1;
+  padding: 12px; /* 변경된 padding */
+  border: 1px solid #b2d3d3; /* 연한 민트색 테두리 */
+  border-radius: 8px;
+  margin-right: 10px; /* 변경된 margin-right */
+  background-color: #fff; /* 밝은 흰색 배경 */
+}
+
+#message-input:focus {
+  outline: none;
+  border-color: #66b2b2; /* 밝은 민트색 포커스 테두리 */
+}
+
+button {
+  padding: 12px 20px; /* 변경된 padding */
+  background-color: #66b2b2; /* 밝은 민트색 버튼 배경 */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #338080; /* 더 진한 민트색으로 호버 시 변경 */
+}
+#button-container {
+  margin-right: 20px; /* 오른쪽 여백 추가 */
+}
+
+
+
+/* 이동 버튼 디자인 */
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+
+body {
+  margin: 0;
+  height: 100%;
+  background-image: linear-gradient(to top, rgb(18, 207, 160) 0%, #75dbe7 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.button_container {
+  position: static;
+  left: 0;
+  right: 0;
+  top: 30%;
+}
+
+.description, .link {
+  font-family: 'Amatic SC', cursive;
+  text-align: center;
+}
+
+.description {
+  font-size: 35px;
+}
+
+.btn {
+  border: none;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  background-color: #222;
+  padding: 17px 60px;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+}
+
+.btn span {
+  position: relative; 
+  z-index: 1;
+}
+
+.btn:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 490%;
+  width: 140%;
+  background: #78c7d2;
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
+  transform: translateX(-98%) translateY(-25%) rotate(45deg);
+}
+
+.btn:hover:after {
+  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+}
+
+.link {
+  font-size: 20px;
+  margin-top: 30px;
+}
+
+.link a {
+  color: #000;
+  font-size: 25px; 
+}
