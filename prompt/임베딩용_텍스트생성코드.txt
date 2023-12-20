@@ -1,0 +1,70 @@
+<질병명>은(는) <진료과>에서 주로 진료하며, 증상은 <증상>이(가) 있다. 관련된 질환으로는 <관련질환>이(가) 있으며, 같은 이름으로는 <동의어>과(와) 같은 명칭이 존재하고, <부위>과(와) 관련 있는 질환이다.
+
+
+
+<족저근막염>은(는) <정형외과>에서 주로 진료하며, 증상은 <압통, 발의 통증>이(가) 있다. 관련된 질환으로는 <신경종, 아킬레스 건염>이(가) 있으며, 같은 이름으로는 <발뒤꿈치 통증 증후군, 발바닥 건염>과(와) 같은 명칭이 존재하고, <발>과(와) 관련  있는 질환이다.
+
+
+
+증상 null값 -> 질병명과 같은 증상
+
+진료과 null값 -> 적절한 진료과
+
+동의어 null값 -> '동의어가 없다'
+
+
+
+
+
+H열에 아래와 같은 형식으로 새로운 데이터를 형성해야 한다. "sibumcase2.xlsx"의 H열에 다음과 같은 데이터를 만들어 추가하라.
+
+
+
+
+
+
+
+
+
+이것은 잘못되었다.
+
+<질병명>에는 <A>열 값이 그대로 들어가야 하고,
+<진료과>에는 <B>열 값이 그대로 들어가야 한다.
+마찬가지로 <증상>에는 <C>열의 값이, <관련질환>에는 <D>열의 값이,
+<동의어>에는 <E>열의 값이, <부위>에는 <F>열의 값이 그대로 들어간다.
+
+
+예시로
+
+족저근막염은(는) 정형외과에서 주로 진료하며, 증상은 압통, 발의 통증이(가) 있다. 관련된 질환으로는 신경종, 아킬레스 건염이(가) 있으며, 같은 이름으로는 발뒤꿈치 통증 증후군, 발바닥 건염과(와) 같은 명칭이 존재하고, 발과(와) 관련  있는 질환이다.
+
+
+이와 같이 <>으로 되어있는 형식이 모두 실제 데이터 값으로 대체되어야한다. 위와 같은 형식으로 <H>열에 각 행에 따라 데이터를 삽입하라.
+
+
+
+# Define a function to create the formatted text using the actual column names
+def create_formatted_text_v3(row):
+    # Construct the sentence using the values from the row, handling missing data
+    parts = [
+        f"{row['질병명']}은(는)" if not pd.isnull(row['질병명']) else "<질병명>은(는)",
+        f"{row['진료과']}에서 주로 진료하며," if not pd.isnull(row['진료과']) else "<진료과>에서 주로 진료하며,",
+        f"증상은 {row['증상']}이(가) 있다." if not pd.isnull(row['증상']) else "증상은 <증상>이(가) 있다.",
+        f"관련된 질환으로는 {row['관련질환']}이(가) 있으며," if not pd.isnull(row['관련질환']) else "관련된 질환으로는 <관련질환>이(가) 있으며,",
+        f"같은 이름으로는 {row['동의어']}과(와) 같은 명칭이 존재하고," if not pd.isnull(row['동의어']) else "같은 이름으로는 <동의어>과(와) 같은 명칭이 존재하고,",
+        f"{row['부위']}과(와) 관련 있는 질환이다." if not pd.isnull(row['부위']) else "<부위>과(와) 관련 있는 질환이다."
+    ]
+    return ' '.join(part for part in parts)
+
+# Apply the function to each row in the DataFrame to create the formatted text
+df_check['H'] = df_check.apply(create_formatted_text_v3, axis=1) # 여기에 데이터 가공할 파일경로
+
+# Save the updated DataFrame back to an Excel file
+final_corrected_output_path = '/mnt/data/sibumcase2_final_corrected.xlsx' # 여기에 만들 파일이름
+df_check.to_excel(final_corrected_output_path, index=False)
+
+final_corrected_output_path
+
+
+
+

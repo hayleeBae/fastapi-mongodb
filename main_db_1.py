@@ -44,6 +44,7 @@ app.add_middleware(
 class UserRequest(BaseModel):
     utterance: str
     gu: str
+    # conversation_id: str  # Add a field for the conversation ID
 
 class BotResponse(BaseModel):
     bot_message: str
@@ -83,6 +84,16 @@ async def chat(user_request: UserRequest):
     if user_question:
         # Call trim function before appending new response to ensure the queue length is maintained
         trim_conversation_history()
+        
+        # # Extract conversation_id from user_request
+        # conversation_id = user_request.conversation_id
+        
+        # # Fetch the conversation from MongoDB
+        # conversation = fetch_conversation_from_db(conversation_id)  # Update conversation_id accordingly
+
+        # if conversation:
+        #     # Extend the conversation history with the fetched conversation
+        #     response_queue.extend(conversation)
 
         gpt_answer, department = get_qa_by_gpt(user_question)
         response_queue.append({"role": "user", "content": user_question})
@@ -106,26 +117,39 @@ async def get_response():
     else:
         return JSONResponse(content={'bot_message': 'No response', 'department': ''})
     
-# Additional endpoint to retrieve and process conversation from MongoDB
-@app.get('/process_conversation/', response_class=JSONResponse)
-async def process_conversation(conversation_id: str = Query(..., description="ID of the conversation in MongoDB")):
-    try:
-        # Fetch the conversation from MongoDB based on the provided ID
-        conversation = fetch_conversation_from_db(conversation_id)
+# # Additional endpoint to retrieve and process conversation from MongoDB
+# @app.get('/process_conversation/', response_class=JSONResponse)
+# async def process_conversation(conversation_id: str = Query(..., description="ID of the conversation in MongoDB")):
+#     """
+#     Retrieve and process a conversation from MongoDB based on the provided ID.
 
-        # Process the conversation using the GPT model
-        gpt_answer, department = get_qa_by_gpt(conversation)
+#     Parameters:
+#         - conversation_id (str): ID of the conversation in MongoDB.
 
-        # Return the processed conversation
-        return JSONResponse(content={'bot_message': gpt_answer, 'department': department})
-    except Exception as e:
-        logger.error(f'Error processing conversation: {e}')
-        return JSONResponse(content={'bot_message': 'Error processing conversation', 'department': ''})
+#     Returns:
+#         - JSONResponse: Processed conversation with GPT answer and department information.
+#     """
+    
+#     try:
+#         # Fetch the conversation from MongoDB based on the provided ID
+#         conversation = fetch_conversation_from_db(conversation_id)
+
+#         if not conversation:
+#             return JSONResponse(content={'bot_message': 'Conversation not found', 'department': ''})
+
+#         # Process the conversation using the GPT model
+#         gpt_answer, department = get_qa_by_gpt(conversation)
+
+#         # Return the processed conversation
+#         return JSONResponse(content={'bot_message': gpt_answer, 'department': department})
+#     except Exception as e:
+#         logger.error(f'Error processing conversation with ID {conversation_id}: {e}')
+#         return JSONResponse(content={'bot_message': f'Error processing conversation with ID {conversation_id}', 'department': ''})
 
 
 
 # Function to get Q&A from GPT
-def get_qa_by_gpt(prompt, temperature=0.5, top_p=0.5, max_tokens=200, frequency_penalty=0.6, presence_penalty=0.1, stop=None, n=1):
+def get_qa_by_gpt(prompt, temperature=0.3, top_p=0.5, max_tokens=300, frequency_penalty=0.6, presence_penalty=0.1, stop=None, n=1):
     # Include the conversation history in the prompt
     conversation_history = response_queue
     full_prompt = "\n".join([f"{turn['role']}: {turn['content']}" for turn in conversation_history])
